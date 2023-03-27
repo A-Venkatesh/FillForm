@@ -47,10 +47,11 @@ public class SpreadSheet {
         List<List<String>> rows = StreamSupport.stream(workbook.getSheet(sheetName).spliterator(), false)
                 .skip(1) // skip the first row
                 .map(row -> StreamSupport.stream(row.spliterator(), false)
-                        .peek(cell -> System.out.println(cell.toString()))
+//                        .peek(cell -> System.out.println(cell.toString()))
                         .map(Cell::getStringCellValue)
+                        .map(String::trim)
                         .collect(Collectors.toList()))
-                .filter(row -> !row.isEmpty())
+                .filter(row -> !row.stream().allMatch(String::isBlank))
                 .collect(Collectors.toList());
         return rows;
     }
